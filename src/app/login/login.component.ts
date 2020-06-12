@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { CipherService } from '../cipher.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +9,10 @@ import { CipherService } from '../cipher.service';
 })
 export class LoginComponent {
 
-  constructor(private authService: AngularFireAuth, private cipher: CipherService) { }
+  constructor(private authService: AuthService, private cipher: CipherService) { }
 
   loginWithGoogle() {
-    this.authService.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    this.authService.loginWithGoogle();
   }
 
   signIn(email, password) {

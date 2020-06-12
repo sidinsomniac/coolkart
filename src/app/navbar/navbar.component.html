@@ -8,23 +8,25 @@
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link" routerLink="/cart">Cart</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login">Login</a>
-        </li>
-        <li class="nav-item dropdown">
-          <div ngbDropdown class="d-inline-block">
-            <a class="btn btn-link dropdown-toggle" ngbDropdownToggle>Username</a>
+        <ng-template #anon>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Login</a>
+          </li>
+        </ng-template>
+        <li class="nav-item dropdown" *ngIf="authService.user$ | async as user; else anon">
+          <div ngbDropdown class=" d-inline-block">
+            <a class="btn btn-link dropdown-toggle" ngbDropdownToggle>{{user.displayName.split(' ')[0]}}</a>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
               <a class="dropdown-item" routerLink="/my/orders" ngbDropdownItem>My Orders</a>
               <a class="dropdown-item" routerLink="/admin/orders" ngbDropdownItem>Manage Orders</a>
               <a class="dropdown-item" routerLink="/admin/products" ngbDropdownItem>Manage Products</a>
-              <a class="dropdown-item btn btn-link" ngbDropdownItem>Logout</a>
+              <a class="dropdown-item btn btn-link" (click)="logout()" ngbDropdownItem>Logout</a>
             </div>
           </div>
         </li>
