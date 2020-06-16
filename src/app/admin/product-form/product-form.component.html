@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-8">
+    <form [formGroup]="productForm">
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Title</label>
+        <input formControlName="productTitle" type="title" class="form-control" placeholder="Product Title">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select formControlName="productCategory" class="form-control">
+          <option selected value="" disabled>Select Product Category</option>
+          <option value="smartphone">Smartphone</option>
+          <option value="laptop">Laptop</option>
+          <option value="headphone">Headphone</option>
+        </select>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">₹</span>
+        </div>
+        <input formControlName="productPrice" type="text" class="form-control" placeholder="Username" aria-label="Username"
+          aria-describedby="basic-addon1">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea formControlName="productDescription" class="form-control" rows="3">Enter Product Description</textarea>
+      </div>
+      <div class="form-group">
+        <div class="custom-file">
+          <input formControlName="productImage" class="form-control" type="file" class="custom-file-input" id="customFile" (change)="onFileSelected($event,fileLabel)" [attr.disabled]="!productForm.value.productCategory">
+          <label class="custom-file-label" for="customFile" #fileLabel>Choose file</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-4"></div>
+</div>
