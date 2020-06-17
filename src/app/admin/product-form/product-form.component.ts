@@ -4,7 +4,8 @@ import { CategoryService } from 'src/app/category.service';
 import { Observable } from 'rxjs';
 import { ImageUploadService } from 'src/app/image-upload.service';
 import { ProductService } from 'src/app/product.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-form',
@@ -14,10 +15,10 @@ import { Router } from '@angular/router';
 export class ProductFormComponent implements OnInit {
 
   public selectedFile = null;
+  public id = '';
   public invalidForm = false;
   public invalidImage = false;
   public categories$: Observable<any[]>;
-  public imageProps: { name: string, imageUrl: string };
 
   public productForm = this.fb.group({
     productTitle: ['', Validators.required],
@@ -27,10 +28,24 @@ export class ProductFormComponent implements OnInit {
     productImage: ['', Validators.required]
   })
 
-  constructor(private fb: FormBuilder, private router: Router, private categoryService: CategoryService, private imageUpload: ImageUploadService, private productService: ProductService) { }
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoryService, private imageUpload: ImageUploadService, private productService: ProductService) { }
 
   ngOnInit() {
     this.categories$ = this.categoryService.getCategories();
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.productService.getProduct(this.id).pipe(
+        take(1)
+      ).subscribe(prodData => {
+        this.productForm.patchValue({
+          productTitle: prodData['productTitle'],
+          productCategory: prodData['productCategory'],
+          productPrice: prodData['productPrice'],
+          productDescription: prodData['productDescription'],
+          productImage: prodData['productImage']
+        })
+      })
+    }
     this.setImageProp();
   }
 
@@ -49,7 +64,6 @@ export class ProductFormComponent implements OnInit {
   setImageProp() {
     this.imageUpload.imageProps.subscribe(prop => {
       console.log(prop);
-      this.imageProps = prop;
       this.productForm.patchValue({
         productImage: prop.imageUrl
       })
@@ -69,10 +83,12 @@ export class ProductFormComponent implements OnInit {
   saveProduct() {
     console.log(this.productForm.value);
     if (this.productForm.valid) {
-      this.productService.createProduct(this.productForm.value).then(res => {
-        console.log('Product submitted successfully:', res);
-        this.router.navigate(['/admin/products']);
-      })
+      if (this.id) {
+        this.productService.updateProduct(this.id, this.productForm.valueChanges);
+      } else {
+        this.productService.createProduct(this.productForm.value)
+      }
+      this.router.navigate(['/admin/products']);
     } else {
       if (this.productForm.get('productImage').invalid) {
         this.invalidImage = true;

@@ -21,4 +21,13 @@ export class ProductService {
       })))
     );
   }
+
+  getProduct(productId) {
+    return this.db.object('/products/'+productId).valueChanges();
+  }
+
+  updateProduct(productId,product) {
+    return this.db.object('/products/'+productId).update(product)
+  }
+
 }
