@@ -1,37 +1,79 @@
-<div class="row">
-  <div class="col-8">
-    <form [formGroup]="productForm">
-      <div class="form-group">
-        <label for="exampleFormControlInput1">Title</label>
-        <input formControlName="productTitle" type="title" class="form-control" placeholder="Product Title">
-      </div>
-      <div class="form-group">
-        <label>Category</label>
-        <select formControlName="productCategory" class="form-control">
-          <option selected value="" disabled>Select Product Category</option>
-          <option value="smartphone">Smartphone</option>
-          <option value="laptop">Laptop</option>
-          <option value="headphone">Headphone</option>
-        </select>
-      </div>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">₹</span>
-        </div>
-        <input formControlName="productPrice" type="text" class="form-control" placeholder="Username" aria-label="Username"
-          aria-describedby="basic-addon1">
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea formControlName="productDescription" class="form-control" rows="3">Enter Product Description</textarea>
-      </div>
-      <div class="form-group">
-        <div class="custom-file">
-          <input formControlName="productImage" class="form-control" type="file" class="custom-file-input" id="customFile" (change)="onFileSelected($event,fileLabel)" [attr.disabled]="!productForm.value.productCategory">
-          <label class="custom-file-label" for="customFile" #fileLabel>Choose file</label>
+<div class="container">
+  <div class="row">
+    <div class="col-4" *ngIf="imageProps">
+      <div class="card" style="width: 18rem;">
+        <img [src]="imageProps?.imageUrl" class="card-img-top" [alt]="imageProps?.name">
+        <div class="card-body">
+          <small class="text-muted">{{productForm.value.productCategory | uppercase}}</small>
+          <h6 class="card-title">{{productForm.value.productTitle}}</h6>
+          <h6 class="text-success">{{productForm.value.productPrice | currency: 'INR':'symbol':'1.0-0'}}</h6>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let desc of productForm.value.productDescription">
+              <small>
+                {{desc}}
+              </small>
+            </li>
+          </ul>
         </div>
       </div>
-    </form>
+    </div>
+    <div class="col-8">
+      <div>
+        <p class="text-danger" *ngIf="invalidForm">Please enter all information before submitting</p>
+      </div>
+      <form [formGroup]="productForm">
+        <div class="form-group">
+          <label>Product Title</label>
+          <input formControlName="productTitle" type="title" class="form-control" placeholder="Product Title">
+        </div>
+        <div class="form-group">
+          <label>Product Category</label>
+          <select formControlName="productCategory" class="form-control">
+            <option selected value="" disabled>Select Product Category</option>
+            <option [value]="category.key" *ngFor="let category of categories$ | async">{{category.value.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Product Price</label>
+          <div>
+            <small class="text-danger"
+              *ngIf="productForm.get('productPrice').touched && productForm.get('productPrice').invalid">Please
+              enter all information before submitting</small>
+          </div>
+          <div>
+            <small class="text-danger" *ngIf="productForm.get('productPrice').errors?.min">Price cannot be
+              negative</small>
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">₹</span>
+            </div>
+            <input formControlName="productPrice" type="number" class="form-control" placeholder="Product Price"
+              aria-label="Product Price" aria-describedby="basic-addon1" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Product Description</label>
+          <div>
+            <small class="text-danger"
+              *ngIf="productForm.get('productDescription').touched && productForm.get('productDescription').required">Price
+              cannot be negative</small>
+          </div>
+          <textarea formControlName="productDescription" class="form-control" (blur)="stylizeDescription()"
+            rows="3">Enter Product Description</textarea>
+        </div>
+        <div class="form-group">
+          <div>
+            <small class="text-danger" *ngIf="invalidImage">Please upload an image</small>
+          </div>
+          <div class="custom-file">
+            <input class="form-control" type="file" class="custom-file-input" id="customFile"
+              (change)="onFileSelected($event,fileLabel)">
+            <label class="custom-file-label" for="customFile" #fileLabel>Choose file</label>
+          </div>
+        </div>
+      </form>
+      <button class="btn btn-primary" (click)="saveProduct()">Submit</button>
+    </div>
   </div>
-  <div class="col-4"></div>
 </div>
