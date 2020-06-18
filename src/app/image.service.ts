@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ImageUploadService {
+export class ImageService {
 
   public imageProps:Subject<{name:string, imageUrl:string}> = new Subject();
 
@@ -29,5 +29,9 @@ export class ImageUploadService {
 
       console.log('Uploaded a blob or file!', snapshot);
     });
+  }
+
+  deleteImage(path) {
+    return this.storage.storage.refFromURL(path).delete();
   }
 }

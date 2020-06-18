@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/category.service';
 import { Observable } from 'rxjs';
-import { ImageUploadService } from 'src/app/image-upload.service';
+import { ImageService } from 'src/app/image.service';
 import { ProductService } from 'src/app/product.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -28,11 +28,12 @@ export class ProductFormComponent implements OnInit {
     productImage: ['', Validators.required]
   })
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoryService, private imageUpload: ImageUploadService, private productService: ProductService) { }
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoryService, private imageService: ImageService, private productService: ProductService) { }
 
   ngOnInit() {
     this.categories$ = this.categoryService.getCategories();
     this.id = this.route.snapshot.paramMap.get('id');
+    // UPDATE PRODUCT IF IN EDIT MODE
     if (this.id) {
       this.productService.getProduct(this.id).pipe(
         take(1)
@@ -58,11 +59,11 @@ export class ProductFormComponent implements OnInit {
     this.selectedFile = event.target.files[0];
 
     // UPLOAD FILE AND GET BACK URL
-    this.imageUpload.uploadFile(path, this.selectedFile);
+    this.imageService.uploadFile(path, this.selectedFile);
   }
 
   setImageProp() {
-    this.imageUpload.imageProps.subscribe(prop => {
+    this.imageService.imageProps.subscribe(prop => {
       console.log(prop);
       this.productForm.patchValue({
         productImage: prop.imageUrl
@@ -70,6 +71,7 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
+  // CONVERT DESCRIPTION TO ARRAY ITEMS
   stylizeDescription() {
     let splittedDesc = '';
     if (this.productForm.value.productDescription.includes('\n')) {
@@ -77,6 +79,19 @@ export class ProductFormComponent implements OnInit {
       this.productForm.patchValue({
         productDescription: splittedDesc
       });
+    } else {
+      if (typeof (this.productForm.value.productDescription) != 'object') {
+        this.productForm.get('productDescription').reset();
+      }
+    }
+  }
+
+  deleteProduct() {
+    if (this.id) {
+      if (!confirm('Are you sure you want to delete this product?')) return;
+      this.productService.deleteProduct(this.id);
+      this.imageService.deleteImage(this.productForm.value.productImage);
+      this.router.navigate(['/admin/products']);
     }
   }
 
@@ -84,9 +99,9 @@ export class ProductFormComponent implements OnInit {
     console.log(this.productForm.value);
     if (this.productForm.valid) {
       if (this.id) {
-        this.productService.updateProduct(this.id, this.productForm.valueChanges);
+        this.productService.updateProduct(this.id, this.productForm.value);
       } else {
-        this.productService.createProduct(this.productForm.value)
+        this.productService.createProduct(this.productForm.value);
       }
       this.router.navigate(['/admin/products']);
     } else {
