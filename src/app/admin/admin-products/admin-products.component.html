@@ -1,4 +1,12 @@
-<a routerLink="/admin/products/new" class="btn btn-link">New Product</a>
+<a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
+<!-- Search form -->
+<div class="input-group mb-3">
+    <input type="text" class="form-control" (keyup)="filterProduct($event)" placeholder="Search Product" aria-label="Search Product"
+        aria-describedby="basic-addon2">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button"><i class="fa fa-search"></i></button>
+    </div>
+</div>
 
 <table class="table">
     <thead>
@@ -10,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let product of products$ | async">
+        <tr *ngFor="let product of filteredProducts">
             <td>{{product.value.productTitle}}</td>
             <td>{{product.value.productPrice | currency: 'INR':'symbol':'1.0-0'}}</td>
             <td>{{product.value.productCategory | titlecase}}</td>
