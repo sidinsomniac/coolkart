@@ -8,15 +8,18 @@ import { UserService } from './user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  constructor(private authService: AuthService, private userService: UserService, private router: Router) {}
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService, private userService: UserService, private router: Router) { }
 
   ngOnInit() {
     this.authService.user$.subscribe(user => {
       if (user) {
         this.userService.saveUser(user);
         let returnUrl = localStorage.getItem('returnUrl');
-        this.router.navigateByUrl(returnUrl);
+        if (returnUrl) {
+          localStorage.removeItem('returnUrl');
+          this.router.navigateByUrl(returnUrl);
+        }
       }
     })
   }
