@@ -2,7 +2,41 @@ table {
     width: 100%;
 }
 
-thead th,
-tbody td {
+::ng-deep .mat-sort-header-button {
+    margin: 0 auto !important;
+}
+
+.mat-column-title, .mat-column-price, .mat-column-category, .mat-column-edit {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-title {
+    flex: 0 0 40% !important;
+    width: 40% !important;
+}
+
+.mat-column-price {
+    flex: 0 0 20% !important;
+    width: 20% !important;
+    text-align: center;
+}
+
+.mat-column-category {
+    flex: 0 0 30% !important;
+    width: 30% !important;
+    text-align: center;
+}
+
+.mat-column-edit {
+    flex: 0 0 10% !important;
+    width: 10% !important;
     text-align: center;
 }

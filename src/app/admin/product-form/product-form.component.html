@@ -30,7 +30,7 @@
           <label>Product Category</label>
           <select formControlName="productCategory" class="form-control">
             <option selected value="" disabled>Select Product Category</option>
-            <option [value]="category.key" *ngFor="let category of categories$ | async">{{category.value.name}}</option>
+            <option [value]="category.key" *ngFor="let category of categories">{{category.value.name}}</option>
           </select>
         </div>
         <div class="form-group">

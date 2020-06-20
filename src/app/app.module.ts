@@ -14,7 +14,11 @@ import {
   MatPaginatorModule,
   MatSortModule,
   MatFormFieldModule,
-  MatInputModule 
+  MatInputModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatSliderModule
 } from '@angular/material';
 
 import { AppRoutingModule, routingComponents } from './app-routing/app-routing.module';
@@ -44,6 +48,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatSliderModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

@@ -1,3 +1,26 @@
-<p>
-  products works!
-</p>
+<mat-toolbar color="accent">
+  <button mat-button [matMenuTriggerFor]="animals">Menu</button>
+  <mat-menu #animals="matMenu">
+    <button mat-menu-item routerLink="/">Best Sellers</button>
+    <hr>
+    <button mat-menu-item [matMenuTriggerFor]="categories">Categories</button>
+  </mat-menu>
+  <mat-menu #categories="matMenu">
+    <button mat-menu-item *ngFor="let category of categories$ | async" routerLink="/"
+      [queryParams]="{category: category.key}">{{category.value.name}}</button>
+  </mat-menu>
+</mat-toolbar>
+<div class="row mt-3">
+  <div class="col-2">
+  </div>
+  <div class="col-10">
+    <div class="products-container">
+      <div class="card mb-2" *ngFor="let product of filteredProducts">
+        <img class="card-img-top" [src]="product.value.productImage" alt="Card image cap">
+        <div class="card-body">
+          <h6 class="card-title text-primary">{{product.value.productTitle | slice:0:40}}...</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

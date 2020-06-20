@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/category.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ImageService } from 'src/app/image.service';
 import { ProductService } from 'src/app/product.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,11 +18,13 @@ export class ProductFormComponent implements OnInit {
   public id = '';
   public invalidForm = false;
   public invalidImage = false;
-  public categories$: Observable<any[]>;
+  public categories: any[];
+  public imageSubscription: Subscription;
 
   public productForm = this.fb.group({
     productTitle: ['', Validators.required],
     productCategory: ['', Validators.required],
+    productCategoryName: [''],
     productPrice: ['', [Validators.required, Validators.min(0)]],
     productDescription: ['', Validators.required],
     productImage: ['', Validators.required]
@@ -31,8 +33,21 @@ export class ProductFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoryService, private imageService: ImageService, private productService: ProductService) { }
 
   ngOnInit() {
-    this.categories$ = this.categoryService.getCategories();
+    // GET LIST OF CATEGORIES
+    this.categoryService.getCategories().subscribe(categories => {
+      this.categories = categories;
+      console.log(categories);
+    });
+    // GET ID IF PRODUCT IS TO BE UPDATED
     this.id = this.route.snapshot.paramMap.get('id');
+    
+    // UPDATE CATEGORY NAME
+    this.productForm.get('productCategory').valueChanges.subscribe(value => {
+      this.productForm.patchValue({
+        productCategoryName: this.returnCategoryName(value)[0].value.name
+      })
+    });
+
     // UPDATE PRODUCT IF IN EDIT MODE
     if (this.id) {
       this.productService.getProduct(this.id).pipe(
@@ -63,7 +78,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   setImageProp() {
-    this.imageService.imageProps.subscribe(prop => {
+    this.imageSubscription = this.imageService.imageProps.asObservable().subscribe(prop => {
       console.log(prop);
       this.productForm.patchValue({
         productImage: prop.imageUrl
@@ -84,6 +99,10 @@ export class ProductFormComponent implements OnInit {
         this.productForm.get('productDescription').reset();
       }
     }
+  }
+
+  returnCategoryName(categoryVal) {
+    return this.categories.filter(category => category.key === categoryVal )
   }
 
   deleteProduct() {
@@ -110,6 +129,10 @@ export class ProductFormComponent implements OnInit {
       }
       this.invalidForm = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.imageSubscription.unsubscribe();
   }
 
 }

@@ -1,0 +1,10 @@
+.products-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.products-container .card {
+    flex-basis: 23%;
+    min-width: 180px;
+}

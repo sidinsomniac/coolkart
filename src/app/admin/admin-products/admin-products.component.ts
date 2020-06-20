@@ -35,11 +35,11 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   }
 
   filterProduct(event) {
-    debugger;
     let query = event.target.value.toLowerCase();
     this.filteredProducts = query ?
       this.products.filter(product => product.value.productTitle.toLowerCase().includes(query)) : this.products;
     this.setDataSource();
+    this.dataSource.paginator = this.paginator;
   }
 
   setDataSource() {
@@ -65,7 +65,6 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   }
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
-    console.log(a);
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
