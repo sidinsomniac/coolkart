@@ -15,12 +15,13 @@ export class ProductsComponent implements OnInit {
   public category: string = "";
   public filteredProducts = [];
   public categories$;
-  public categoriesCollapsed: boolean = true;
 
   constructor(private productService: ProductService, private categoryService: CategoryService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    // GET CATEGORIES
     this.categories$ = this.categoryService.getCategories();
+    // GET LIST OF PRODUCTS, THEN FILTER USING ROUTE
     this.productService.getAllProducts().pipe(
       switchMap(products => {
         this.filteredProducts = this.products = products;

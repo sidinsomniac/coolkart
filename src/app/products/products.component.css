@@ -4,7 +4,7 @@
     flex-wrap: wrap;
 }
 
-.products-container .card {
-    flex-basis: 23%;
+product-card {
+    width:23%;
     min-width: 180px;
 }

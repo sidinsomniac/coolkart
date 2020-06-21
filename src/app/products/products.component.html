@@ -1,4 +1,4 @@
-<mat-toolbar color="accent">
+<mat-toolbar>
   <button mat-button [matMenuTriggerFor]="animals">Menu</button>
   <mat-menu #animals="matMenu">
     <button mat-menu-item routerLink="/">Best Sellers</button>
@@ -12,15 +12,28 @@
 </mat-toolbar>
 <div class="row mt-3">
   <div class="col-2">
+    <mat-card>
+      Quick Selection
+      <hr>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <small class="text-muted"><i class="fa fa-filter" aria-hidden="true"></i></small>
+          </mat-expansion-panel-header>
+          <div *ngFor="let category of categories$ | async">
+            <a routerLink="/" [queryParams]="{category: category.key}">
+              <small>
+                {{category.value.name}}
+              </small>
+            </a>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card>
   </div>
   <div class="col-10">
     <div class="products-container">
-      <div class="card mb-2" *ngFor="let product of filteredProducts">
-        <img class="card-img-top" [src]="product.value.productImage" alt="Card image cap">
-        <div class="card-body">
-          <h6 class="card-title text-primary">{{product.value.productTitle | slice:0:40}}...</h6>
-        </div>
-      </div>
+      <product-card *ngFor="let product of filteredProducts" [productDetails]="product"></product-card>
     </div>
   </div>
 </div>

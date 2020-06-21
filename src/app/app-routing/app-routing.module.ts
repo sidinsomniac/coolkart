@@ -12,9 +12,11 @@ import { LoginComponent } from '../login/login.component';
 import { AuthGuardService } from '../auth-guard.service';
 import { AdminAuthGuardService } from '../admin-auth-guard.service';
 import { ProductFormComponent } from '../admin/product-form/product-form.component';
+import { ProductDetailsComponent } from '../product-details/product-details.component';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
+  { path: 'productinfo/:id', component: ProductDetailsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'cart', component: ShoppingCartComponent},
@@ -42,6 +44,7 @@ export class AppRoutingModule { }
 export const routingComponents = [
   LoginComponent,
   HomeComponent,
+  ProductsComponent,
   ProductsComponent,
   ShoppingCartComponent,
   CheckoutComponent,

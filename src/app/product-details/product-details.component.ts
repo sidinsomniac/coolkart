@@ -1,0 +1,26 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../product.service';
+import { take } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-product-details',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.css']
+})
+export class ProductDetailsComponent implements OnInit {
+
+  public id: string = '';
+  public productDetails = {};
+
+  constructor(private route: ActivatedRoute, private productService: ProductService) { }
+
+  ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) this.productService.getProduct(this.id).pipe(take(1)).subscribe(product => {
+      this.productDetails = product;
+      console.log(product);
+    })
+  }
+
+}

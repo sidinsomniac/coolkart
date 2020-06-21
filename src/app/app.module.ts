@@ -8,18 +8,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
-import {
-  MatTableModule,
-  MatButtonModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatCardModule,
-  MatToolbarModule,
-  MatMenuModule,
-  MatSliderModule
-} from '@angular/material';
+import { MaterialModule } from './material/material.module';
 
 import { AppRoutingModule, routingComponents } from './app-routing/app-routing.module';
 
@@ -29,6 +18,9 @@ import { LoginComponent } from './login/login.component';
 import { environment } from 'src/environments/environment';
 import { ProductFormComponent } from './admin/product-form/product-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LocaleStringPipe } from './locale-string.pipe';
+import { ProductCardComponent } from './product-card/product-card.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -36,22 +28,16 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     routingComponents,
     LoginComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    LocaleStringPipe,
+    ProductCardComponent,
+    ProductDetailsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
 
-    MatTableModule,
-    MatButtonModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatSliderModule,
+    MaterialModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

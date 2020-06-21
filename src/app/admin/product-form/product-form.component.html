@@ -1,21 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-4" *ngIf="productForm.value.productImage">
-      <div class="card" style="width: 18rem;">
-        <img [src]="productForm.value.productImage" class="card-img-top">
-        <div class="card-body">
-          <small class="text-muted">{{productForm.value.productCategory | uppercase}}</small>
-          <h6 class="card-title">{{productForm.value.productTitle}}</h6>
-          <h6 class="text-success">{{productForm.value.productPrice | currency: 'INR':'symbol':'1.0-0'}}</h6>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let desc of productForm.value.productDescription">
-              <small>
-                {{desc}}
-              </small>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <product-card [productDetails]="productForm" [productForm]="true"></product-card>
     </div>
     <div class="col-8">
       <div>
