@@ -13,5 +13,6 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item" *ngFor="let description of productDetails?.productDescription"><small>{{description}}</small></li>
     </ul>
+    <button mat-flat-button color="primary" (click)="addToCart(productDetails)">Add to cart</button>
   </div>
 </div>
