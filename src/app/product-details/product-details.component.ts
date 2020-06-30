@@ -12,6 +12,8 @@ import { ShoppingCartService } from '../shopping-cart.service';
 export class ProductDetailsComponent implements OnInit {
 
   public id: string = '';
+  public rating:number = 0;
+  public reviewers:number = 0;
   public productDetails = {};
 
   constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService) { }
@@ -20,6 +22,8 @@ export class ProductDetailsComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) this.productService.getProduct(this.id).pipe(take(1)).subscribe(product => {
       this.productDetails = product;
+      this.rating = (<any>product).rating;
+      this.reviewers = (<any>product).reviewers;
       console.log(product);
     });
   }
