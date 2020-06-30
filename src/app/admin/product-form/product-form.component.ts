@@ -27,7 +27,9 @@ export class ProductFormComponent implements OnInit {
     productCategoryName: [''],
     productPrice: ['', [Validators.required, Validators.min(0)]],
     productDescription: ['', Validators.required],
-    productImage: ['', Validators.required]
+    productImage: ['', Validators.required],
+    rating: 0,
+    reviewers: 0
   })
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private categoryService: CategoryService, private imageService: ImageService, private productService: ProductService) { }
@@ -44,7 +46,9 @@ export class ProductFormComponent implements OnInit {
     // UPDATE CATEGORY NAME
     this.productForm.get('productCategory').valueChanges.subscribe(value => {
       this.productForm.patchValue({
-        productCategoryName: this.returnCategoryName(value)[0].value.name
+        productCategoryName: this.returnCategoryName(value)[0].value.name,
+        rating: Math.ceil(Math.random()*4)+1,
+        reviewers: Math.ceil(Math.random()*1500)+80
       })
     });
 
