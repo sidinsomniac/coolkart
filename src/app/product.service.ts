@@ -23,7 +23,12 @@ export class ProductService {
   }
 
   getProduct(productId) {
-    return this.db.object('/products/'+productId).valueChanges();
+    return this.db.object('/products/'+productId).snapshotChanges().pipe(
+      map(snap => {
+        let productObject = (<object>snap.payload.val());
+        return {...productObject,...{key: snap.key}};
+      })
+    );
   }
 
   updateProduct(productId,product) {
