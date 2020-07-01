@@ -8,11 +8,11 @@
       <h6 class="card-title">{{productDetails.value.productTitle}}</h6>
     </ng-template>
     <h4 class="text-success"><sup>₹</sup>{{productDetails.value.productPrice | localeString }}</h4>
-    <ul  *ngIf="productForm" class="list-group list-group-flush">
+    <ul *ngIf="productForm" class="list-group list-group-flush">
       <li class="list-group-item" *ngFor="let description of productDetails.value.productDescription">{{description}}</li>
     </ul>
   </div>
-  <div class="card-footer p-0">
+  <div class="card-footer p-0" *ngIf="!productForm" >
     <button mat-raised-button color="accent" routerLink="/productinfo/{{productDetails.key}}" class="btn-block">Quick Look</button>
   </div>
 </div>

@@ -15,15 +15,16 @@ export class ShoppingCartService {
     })
   }
 
-  private getItem(cartId,product) {
+  private getItem(cartId, product) {
     return this.db.object('/shopping-carts/' + cartId + '/items/' + product.key);
   }
 
-  private getCart(cartId: string) {
-    return this.db.object('/shopping-carts' + cartId).valueChanges();
+  async getCart() {
+    let cartId = await this.getOrCreateCartId();
+    return this.db.object('/shopping-carts/' + cartId).valueChanges();
   }
 
-  private async getOrCreateCartId() {
+  private async getOrCreateCartId():Promise<string> {
     let cartId = localStorage.getItem('cartId');
     if (cartId) return cartId;
     let res = await this.createCart()
@@ -32,14 +33,21 @@ export class ShoppingCartService {
   }
 
   async addToCart(product) {
+    this.updateItemQuantity(product,1);
+  }
+
+  async removeFromCart(product) {
+    this.updateItemQuantity(product,-1);
+  }
+
+  private async updateItemQuantity(product, change: number) {
     let cartId = await this.getOrCreateCartId();
-    let item$ = this.getItem(cartId,product);
+    let item$ = this.getItem(cartId, product);
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
       if (item.payload.val())
-        item$.update({ quantity: item.payload.val().quantity + 1 })
+      item$.update({ quantity: item.payload.val().quantity + change })
       else
-        item$.set({ product: product, quantity: 1 })
+      item$.set({ product: product, quantity: 1 })
     });
-    console.log(cartId, product);
   }
 }

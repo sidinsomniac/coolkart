@@ -7,12 +7,32 @@
     <p class="text-muted">{{productDetails?.productCategory | uppercase}}</p>
     <div class="mt-2" *ngIf="rating">
       <i class="fa fa-star" style="color: gold;" aria-hidden="true" *ngFor="let star of [].constructor(rating)"></i>
-      <i class="fa fa-star" style="color: #eee;" aria-hidden="true" *ngFor="let star of [].constructor(5-rating)"></i> ({{reviewers}})
+      <i class="fa fa-star" style="color: #eee;" aria-hidden="true" *ngFor="let star of [].constructor(5-rating)"></i>
+      ({{reviewers}})
     </div>
     <h1 class="text-success mt-3"><sup>₹</sup>{{productDetails?.productPrice | localeString }}</h1>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" *ngFor="let description of productDetails?.productDescription"><small>{{description}}</small></li>
+      <li class="list-group-item" *ngFor="let description of productDetails?.productDescription">
+        <small>{{description}}</small></li>
     </ul>
-    <button mat-flat-button color="primary" (click)="addToCart(productDetails)">Add to cart</button>
+    <div class="w-50 cart-button">
+      <button class="w-100" *ngIf="getQuantity(productDetails) === 0; else updateQuantity" mat-flat-button color="primary"
+        (click)="addToCart(productDetails)">Add to cart</button>
+      <ng-template #updateQuantity>
+        <div class="row no-gutters">
+          <!-- SUBTRACT BUTTON -->
+          <div class="col-2">
+            <button class="btn btn-danger btn-block" (click)="removeFromCart(productDetails)">-</button>
+          </div>
+          <div class="col bg-light d-flex justify-content-center align-items-center">
+            {{getQuantity(productDetails)}} in cart
+          </div>
+          <!-- ADD BUTTON -->
+          <div class="col-2">
+            <button class="btn btn-success btn-block" (click)="addToCart(productDetails)">+</button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
