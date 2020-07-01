@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { take, map, switchMap } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { Product } from './models/product';
 import { Observable } from 'rxjs';
 import { ShoppingCart } from './models/shopping-cart';
@@ -54,16 +54,27 @@ export class ShoppingCartService {
     });
   }
 
-  async getTotalItems() {
+  // GET ALL ITEMS IN CART
+  async getTotalItemsInCart():Promise<Observable<any>> {
     let cart$ = await this.getCart();
     return cart$.pipe(
       map(cart => {
         let tempArr = [];
+        debugger;
+
         for (let productId in cart.items) {
-          tempArr.push(cart.items[productId].quantity);
+          tempArr.push({
+            quantity: cart.items[productId].quantity,
+            totalPrice: cart.items[productId].quantity*cart.items[productId].product.productPrice
+          });
         }
-        return tempArr;
+        return {
+          totalCount: tempArr.reduce((a, b) => a + b.quantity, 0),
+          totalPrice: tempArr.map(item => item.totalPrice),
+          grandTotal: tempArr.reduce((a, b) => a + b.totalPrice, 0),
+          items: cart.items
+        };
       })
-    );
+    )
   }
 }

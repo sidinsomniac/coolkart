@@ -22,9 +22,9 @@ export class NavbarComponent implements OnInit {
     });
 
     // CALCULATE TOTAL ITEMS IN CART
-    let cartQuantityList$ = await this.cartService.getTotalItems();
-    cartQuantityList$.subscribe(quantityList => {
-      this.shoppingCartItemCount = quantityList.reduce((a, b) => a + b, 0);
+    let cartQuantityList$ = await this.cartService.getTotalItemsInCart();
+    cartQuantityList$.subscribe(totalQuantity => {
+      this.shoppingCartItemCount = totalQuantity.totalCount;
     });
   }
 

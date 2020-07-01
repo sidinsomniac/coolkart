@@ -1,3 +1,40 @@
-<p>
-  shopping-cart works!
-</p>
+<div class="jumbotron bg-light">
+  <h2>Shopping Cart</h2>
+  <div class="card">
+    <ng-container *ngIf="products">
+      <div class="card-header">
+        <p>
+          You have {{shoppingCartItemCount}} items in your cart
+        </p>
+      </div>
+      <div class="card-body">
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col"></th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products; index as i">
+              <td>{{product.product?.productTitle}}</td>
+              <td>
+                <img style="width: 100px;" [src]="product.product.productImage" class="img-fluid img-thumbnail" alt="">
+              </td>
+              <td class="text-center">{{product?.quantity}}</td>
+              <td class="text-center">{{totalPrices[i] | currency: 'INR':'symbol':'1.0-0'}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <th scope="row">Grand Total</th>
+            <td></td>
+            <td></td>
+            <td>{{grandTotal | currency: 'INR':'symbol':'1.0-0'}}</td>
+          </tfoot>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+</div>
