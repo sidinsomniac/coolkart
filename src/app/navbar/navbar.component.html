@@ -12,7 +12,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/cart">Cart</a>
+          <a class="nav-link" routerLink="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <div href="#" class="badge badge-pill badge-warning">{{shoppingCartItemCount}}</div>
+          </a>
         </li>
         <ng-template #anon>
           <li class="nav-item">
