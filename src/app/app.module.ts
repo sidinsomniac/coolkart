@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LocaleStringPipe } from './locale-string.pipe';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
     ProductFormComponent,
     LocaleStringPipe,
     ProductCardComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ProductQuantityComponent
   ],
   imports: [
     BrowserModule,

@@ -35,14 +35,7 @@ export class ShoppingCartService {
     return res.key;
   }
 
-  async addToCart(product: Product) {
-    this.updateItemQuantity(product, 1);
-  }
-
-  async removeFromCart(product: Product) {
-    this.updateItemQuantity(product, -1);
-  }
-
+  // \ADD OR REMOVE PRODUCT QUANTITY
   private async updateItemQuantity(product: Product, change: number) {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product);
@@ -54,18 +47,26 @@ export class ShoppingCartService {
     });
   }
 
+  async addToCart(product: Product) {
+    this.updateItemQuantity(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.updateItemQuantity(product, -1);
+  }
+
+  
   // GET ALL ITEMS IN CART
-  async getTotalItemsInCart():Promise<Observable<any>> {
+  async getTotalItemsInCart(): Promise<Observable<any>> {
     let cart$ = await this.getCart();
     return cart$.pipe(
       map(cart => {
         let tempArr = [];
-        debugger;
 
         for (let productId in cart.items) {
           tempArr.push({
             quantity: cart.items[productId].quantity,
-            totalPrice: cart.items[productId].quantity*cart.items[productId].product.productPrice
+            totalPrice: cart.items[productId].quantity * cart.items[productId].product.productPrice
           });
         }
         return {
@@ -76,5 +77,18 @@ export class ShoppingCartService {
         };
       })
     )
+  }
+
+  // GET QUANTITY OF PRODUCT
+  getQuantity(cart, product): number {
+    console.log(cart, product);
+    let item;
+    if (!cart) return 0;
+    if (cart['items']) {
+      if (product) {
+        item = cart['items'][product.key];
+      }
+    }
+    return item ? item.quantity : 0;
   }
 }

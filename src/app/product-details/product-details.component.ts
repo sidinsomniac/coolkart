@@ -14,11 +14,11 @@ import { Product } from '../models/product';
 export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   public id: string = '';
-  public rating:number = 0;
-  public reviewers:number = 0;
+  public rating: number = 0;
+  public reviewers: number = 0;
   public productDetails = {};
-  public shoppingCart = {};
   public subscription: Subscription;
+  public quantity: number = 0;
 
   constructor(private route: ActivatedRoute, private productService: ProductService, private shoppingCartService: ShoppingCartService) { }
 
@@ -29,34 +29,23 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.productDetails = product;
       this.rating = (<any>product).rating;
       this.reviewers = (<any>product).reviewers;
-      console.log(product);
+
+      // GET THE SHOPPING CART
+      this.shoppingCartService.getCart().then(
+        shoppingCart => {
+          this.subscription = shoppingCart.subscribe(cart => {
+            this.quantity = this.shoppingCartService.getQuantity(cart, product);
+          })
+        }
+      )
     });
-    // GET THE SHOPPING CART
-    this.shoppingCartService.getCart().then(
-      shoppingCart => {
-        this.subscription = shoppingCart.subscribe(cart => {
-          this.shoppingCart = cart;
-        })
-      }
-    )
   }
 
-  addToCart(product:Product) {
+
+  addToCart(product: Product) {
     this.shoppingCartService.addToCart(product)
   }
-  
-  removeFromCart(product:Product) {
-    this.shoppingCartService.removeFromCart(product)
-  }
 
-  getQuantity(product:Product) {
-    console.log(this.shoppingCart);
-    let item;
-    if (!this.shoppingCart) return 0;
-    if (this.shoppingCart['items'])
-    item = this.shoppingCart['items'][product.key];
-    return item ? item.quantity : 0;
-  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

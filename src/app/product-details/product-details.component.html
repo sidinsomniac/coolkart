@@ -16,22 +16,10 @@
         <small>{{description}}</small></li>
     </ul>
     <div class="w-50 cart-button">
-      <button class="w-100" *ngIf="getQuantity(productDetails) === 0; else updateQuantity" mat-flat-button color="primary"
+      <button class="w-100" *ngIf="quantity === 0; else updateQuantity" mat-flat-button color="primary"
         (click)="addToCart(productDetails)">Add to cart</button>
       <ng-template #updateQuantity>
-        <div class="row no-gutters">
-          <!-- SUBTRACT BUTTON -->
-          <div class="col-2">
-            <button class="btn btn-danger btn-block" (click)="removeFromCart(productDetails)">-</button>
-          </div>
-          <div class="col bg-light d-flex justify-content-center align-items-center">
-            {{getQuantity(productDetails)}} in cart
-          </div>
-          <!-- ADD BUTTON -->
-          <div class="col-2">
-            <button class="btn btn-success btn-block" (click)="addToCart(productDetails)">+</button>
-          </div>
-        </div>
+        <product-quantity [product]="productDetails"></product-quantity>
       </ng-template>
     </div>
   </div>
