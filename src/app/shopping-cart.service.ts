@@ -40,8 +40,13 @@ export class ShoppingCartService {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product);
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
-      if (item.payload.val())
-        item$.update({ quantity: item.payload.val().quantity + change })
+      if (item.payload.val()) {
+        if (item.payload.val().quantity === 1 && change === -1) {
+          item$.remove();
+        } else {
+          item$.update({ quantity: item.payload.val().quantity + change })
+        }
+      }
       else
         item$.set({ product: product, quantity: 1 })
     });

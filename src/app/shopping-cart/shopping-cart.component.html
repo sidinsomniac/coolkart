@@ -11,9 +11,9 @@
         <table class="table table-borderless">
           <thead>
             <tr>
+              <th scope="col" style="width: 10%;"></th>
               <th scope="col" style="width: 40%;">Product</th>
               <th scope="col" style="width: 20%;"></th>
-              <th scope="col" style="width: 10%;"></th>
               <th scope="col" class="text-center" style="width: 20%;">Quantity</th>
               <th scope="col" class="text-center" style="width: 20%;">Total</th>
             </tr>
@@ -21,12 +21,12 @@
           <tbody>
             <ng-container *ngFor="let product of products; index as i">
               <tr *ngIf="product.quantity">
+                <td>
+                  <img [src]="product.product.productImage" class="img-fluid img-thumbnail" alt="">
+                </td>
                 <td>{{product.product?.productTitle}}</td>
                 <td>
                   <product-quantity [product]="product.product"></product-quantity>
-                </td>
-                <td>
-                  <img [src]="product.product.productImage" class="img-fluid img-thumbnail" alt="">
                 </td>
                 <td class="text-center">{{product?.quantity}}</td>
                 <td class="text-center">₹{{totalPrices[i] | localeString}}</td>
