@@ -22,6 +22,7 @@ import { LocaleStringPipe } from './locale-string.pipe';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
     LocaleStringPipe,
     ProductCardComponent,
     ProductDetailsComponent,
-    ProductQuantityComponent
+    ProductQuantityComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,

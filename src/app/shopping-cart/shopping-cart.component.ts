@@ -25,11 +25,15 @@ export class ShoppingCartComponent implements OnInit {
     let cartQuantityList$ = await this.cartService.getTotalItemsInCart();
     cartQuantityList$.subscribe(totalCartItems => {
       this.shoppingCartItemCount = totalCartItems.totalCount;
-      this.products = Object.values(totalCartItems.items);
+      this.products = totalCartItems.items ? Object.values(totalCartItems.items) : [];
       this.totalPrices = totalCartItems.totalPrice;
       this.grandTotal = totalCartItems.grandTotal;
       console.log(totalCartItems);
     });
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
   }
 
 }
