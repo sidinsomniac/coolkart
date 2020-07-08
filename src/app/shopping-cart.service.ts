@@ -85,7 +85,7 @@ export class ShoppingCartService {
     return res.key;
   }
 
-  // \ADD OR REMOVE PRODUCT QUANTITY
+  // ADD OR REMOVE PRODUCT QUANTITY
   private async updateItemQuantity(product: Product, change: number) {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product);
