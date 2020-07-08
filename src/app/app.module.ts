@@ -23,6 +23,7 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CarouselComponent } from './carousel/carousel.component';
     ProductCardComponent,
     ProductDetailsComponent,
     ProductQuantityComponent,
-    CarouselComponent
+    CarouselComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
