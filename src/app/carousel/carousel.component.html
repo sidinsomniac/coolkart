@@ -1,3 +1,3 @@
-<p>
-  carousel works!
-</p>
+<ng-container *ngFor="let img of imgUrlArr; index as i">
+  <img *ngIf="i === currentImageUrlIndex" class="img-fluid" [src]="img" alt="" @fade>
+</ng-container>
